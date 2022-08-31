@@ -1,0 +1,4 @@
+[flake8]
+exclude = venv/, ./app/fixtures
+max-complexity = 10
+max-line-length = 120
