@@ -8,6 +8,7 @@ movie_filter_parser.add_argument('genre_name', type=str, location='args', store_
 movie_filter_parser.add_argument('director_id', type=int, location='args', store_missing=False)
 movie_filter_parser.add_argument('genre_id', type=int, location='args', store_missing=False)
 movie_filter_parser.add_argument('year', type=int, location='args', store_missing=False)
+movie_filter_parser.add_argument('page', type=int, location='args', required=False)
 
 movie_model_parser: RequestParser = RequestParser()
 movie_model_parser.add_argument('title', location='json', type=str, required=True, nullable=False)
@@ -20,6 +21,9 @@ movie_model_parser.add_argument('director_name', location='json', type=str, requ
 
 name_model_parser: RequestParser = RequestParser()
 name_model_parser.add_argument('name', location='json', type=str, required=True, nullable=False)
+
+page_parser: RequestParser = RequestParser()
+page_parser.add_argument('page', type=int, location='args', required=False)
 
 user_parser: RequestParser = RequestParser()
 user_parser.add_argument('username', location='json', type=str, required=True, nullable=False)

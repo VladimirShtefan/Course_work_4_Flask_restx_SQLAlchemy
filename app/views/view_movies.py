@@ -6,7 +6,7 @@ from app.dao.model.movie import movie_model
 from app.dao.model.user import Role
 from app.helpers.decorators import user_required
 from app.service.movie import MovieService
-from app.service.parsers import movie_filter_parser, movie_model_parser
+from app.service.parsers import movie_filter_parser, movie_model_parser, page_parser
 
 movie_ns = Namespace('movies')
 

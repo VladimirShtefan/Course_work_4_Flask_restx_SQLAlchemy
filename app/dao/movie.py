@@ -1,5 +1,6 @@
 from typing import List
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from werkzeug.exceptions import NotFound
 
 from app.dao.base import BaseDAO
 from app.dao.model.director import Director
@@ -32,6 +33,7 @@ class MovieDAO(BaseDAO[Movie]):
 
     def get_all_movies(self, **kwargs) -> List[Movie]:
         movie_query = self.db_session.query(self.__model__)
+        page = kwargs.get('page')
         for key, item in kwargs.items():
             if hasattr(Director, key):
                 if type(item) == str:
@@ -41,6 +43,13 @@ class MovieDAO(BaseDAO[Movie]):
                     movie_query = movie_query.join(Genre).filter(getattr(Genre, key).ilike(f'%{item}%'))
             if hasattr(self.__model__, key):
                 movie_query = movie_query.filter(getattr(self.__model__, key) == item)
+        if page:
+            try:
+                print(page)
+                print(self._items_per_page)
+                return movie_query.paginate(page, self._items_per_page).items
+            except NotFound:
+                return []
         return movie_query.all()
 
     def add_movie(self, **kwargs) -> Movie:

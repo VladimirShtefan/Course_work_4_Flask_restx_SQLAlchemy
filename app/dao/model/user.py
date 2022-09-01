@@ -2,6 +2,7 @@ import enum
 
 from flask_restx import fields
 
+from app.dao.model.genre import Genre, genre_model
 from app.setup_api import api
 from app.setup_db import db
 
@@ -18,6 +19,9 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     role = db.Column(db.Enum(Role), default=Role.user, nullable=False)
     refresh_token = db.Column(db.String, unique=True)
+    surname = db.Column(db.String, nullable=True)
+    favorite_genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
+    favorite_genre = db.relationship("Genre")
 
 
 user_model = api.model(
@@ -27,6 +31,7 @@ user_model = api.model(
         'username': fields.String(max_length=50, required=True, example='username'),
         'password': fields.String(max_length=255, required=True, example='password'),
         'role': fields.String(enum=[x.name for x in Role], required=True, example='user or admin'),
+        'favorite_genre': fields.Nested(genre_model),
     }
 )
 
