@@ -33,8 +33,6 @@ class BaseDAO(Generic[T]):
         items: BaseQuery = self.db_session.query(self.__model__)
         if page:
             try:
-                print(page)
-                print(self._items_per_page)
                 return items.paginate(page, self._items_per_page).items
             except NotFound:
                 return []

@@ -1,6 +1,6 @@
 from flask_restx import Api
 
-from app.blueprints.api_blueprint.api import api_blueprint
+from app.blueprints.api.api import api_blueprint
 
 authorizations = {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}}
 
