@@ -1,4 +1,6 @@
 from typing import List
+
+from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from werkzeug.exceptions import NotFound
 
@@ -13,17 +15,17 @@ class MovieDAO(BaseDAO[Movie]):
     __model__ = Movie
 
     def get_director_and_genre_id(self, genre_name: str, director_name: str) -> tuple[int, int]:
-        director = self.db_session.query(Director).filter(Director.director_name.ilike(director_name)).first()
-        genre = self.db_session.query(Genre).filter(Genre.genre_name.ilike(genre_name)).first()
+        director = self.db_session.query(Director).filter(Director.name.ilike(f'%{director_name}%')).first()
+        genre = self.db_session.query(Genre).filter(Genre.name.ilike(f'%{genre_name}%')).first()
         if not director:
-            director_model = Director(director_name=director_name)
+            director_model = Director(name=director_name)
             self.db_session.add(director_model)
             self.db_session.flush()
             director_id = director_model.id
         else:
             director_id = director.id
         if not genre:
-            genre_model = Genre(genre_name=genre_name)
+            genre_model = Genre(name=genre_name)
             self.db_session.add(genre_model)
             self.db_session.flush()
             genre_id = genre_model.id
@@ -34,6 +36,7 @@ class MovieDAO(BaseDAO[Movie]):
     def get_all_movies(self, **kwargs) -> List[Movie]:
         movie_query = self.db_session.query(self.__model__)
         page = kwargs.get('page')
+        status = kwargs.get('status')
         for key, item in kwargs.items():
             if hasattr(Director, key):
                 if type(item) == str:
@@ -43,10 +46,10 @@ class MovieDAO(BaseDAO[Movie]):
                     movie_query = movie_query.join(Genre).filter(getattr(Genre, key).ilike(f'%{item}%'))
             if hasattr(self.__model__, key):
                 movie_query = movie_query.filter(getattr(self.__model__, key) == item)
+        if status == 'new':
+            movie_query = movie_query.order_by(desc(self.__model__.year))
         if page:
             try:
-                print(page)
-                print(self._items_per_page)
                 return movie_query.paginate(page, self._items_per_page).items
             except NotFound:
                 return []

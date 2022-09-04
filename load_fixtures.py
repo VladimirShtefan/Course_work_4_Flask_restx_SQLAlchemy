@@ -29,14 +29,14 @@ def _load_fixtures(database=db):
     for director in DATA["directors"]:
         d = Director(
             id=director["pk"],
-            director_name=director["director_name"],
+            name=director["director_name"],
         )
         database.session.add(d)
 
     for genre in DATA["genres"]:
         d = Genre(
             id=genre["pk"],
-            genre_name=genre["genre_name"],
+            name=genre["genre_name"],
         )
         database.session.add(d)
     try:

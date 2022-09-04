@@ -11,7 +11,7 @@ class GenreDAO(BaseDAO[Genre]):
     def put_genre(self, gid: int, **kwargs) -> None:
         genre_name = kwargs.get('name')
         try:
-            self.db_session.query(self.__model__).filter_by(id=gid).update({'genre_name': genre_name})
+            self.db_session.query(self.__model__).filter_by(id=gid).update({'name': genre_name})
         except (IntegrityError, InvalidRequestError) as e:
             self.db_session.rollback()
             self.logger.info(e.args[0])
@@ -19,7 +19,7 @@ class GenreDAO(BaseDAO[Genre]):
 
     def add_genre(self, **kwargs) -> Genre:
         genre_name = kwargs.get('name')
-        new_genre = self.__model__(genre_name=genre_name)
+        new_genre = self.__model__(name=genre_name)
         self.db_session.add(new_genre)
         try:
             self.db_session.flush()
