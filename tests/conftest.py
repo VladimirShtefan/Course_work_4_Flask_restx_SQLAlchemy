@@ -1,3 +1,21 @@
+from functools import wraps
+from unittest.mock import patch
+
+
+def mock_decorator(*roles):
+    def mock_mock_decorator(f):
+        @wraps(f)
+        def decorator(*args, **kwargs):
+            return f(*args, **kwargs, email='email')
+
+        return decorator
+
+    return mock_mock_decorator
+
+
+patch('app.helpers.decorators.user_required', mock_decorator).start()
+
+
 import pytest
 
 from app.app import create_app
