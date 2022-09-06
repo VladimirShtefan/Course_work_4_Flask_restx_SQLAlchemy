@@ -72,5 +72,3 @@ class UserDAO(BaseDAO[User]):
         user_id = self.search_user(email).id
         movie = self.db_session.query(UserMovie).filter_by(user_id=user_id, movie_id=movie_id).first()
         self.db_session.delete(movie)
-
-

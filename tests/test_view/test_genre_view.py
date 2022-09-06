@@ -10,7 +10,7 @@ class TestGenresView:
         database.session.add(obj)
         database.session.commit()
         return obj
-    
+
     def test_many(self, client, genre):
         response = client.get("/genres/")
         assert response.status_code == 200

@@ -21,6 +21,8 @@ class TestGenreService:
             Genre(id=1, name='test_genre_1'),
             Genre(id=2, name='test_genre_2'),
         ]
+        dao.delete_row.return_value = None
+        dao.put_genre.return_value = None
         return dao
 
     @pytest.fixture()
@@ -55,3 +57,9 @@ class TestGenreService:
         assert len(genres) == 2
         assert genres == genres_dao_mock.get_all_items.return_value
         genres_dao_mock.get_all_items.assert_called_with(page=page)
+
+    def test_del_item(self, genres_dao_mock, genres_service):
+        assert genres_service.del_item(id=1) is None
+
+    def test_put_genre(self, genres_dao_mock, genres_service):
+        assert genres_service.put_genre(gid=1) is None

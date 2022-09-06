@@ -43,6 +43,3 @@ def database(app):
 def client(database, app):
     with app.test_client() as client:
         yield client
-
-
-

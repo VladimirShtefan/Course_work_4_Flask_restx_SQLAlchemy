@@ -57,7 +57,8 @@ class MovieDAO(BaseDAO[Movie]):
             raise BadRequest('Attribute error. genre_name or director_name is None')
         else:
             if director_name and genre_name:
-                director_id, genre_id = self.get_director_and_genre_id(genre_name=genre_name, director_name=director_name)
+                director_id, genre_id = self.get_director_and_genre_id(genre_name=genre_name,
+                                                                       director_name=director_name)
                 data = {'director_id': director_id, 'genre_id': genre_id}
                 data.update(kwargs)
 
@@ -81,7 +82,8 @@ class MovieDAO(BaseDAO[Movie]):
             raise BadRequest('Attribute error. genre_name or director_name is None')
         else:
             if director_name and genre_name:
-                director_id, genre_id = self.get_director_and_genre_id(genre_name=genre_name, director_name=director_name)
+                director_id, genre_id = self.get_director_and_genre_id(genre_name=genre_name,
+                                                                       director_name=director_name)
                 data = {'director_id': director_id, 'genre_id': genre_id}
                 data.update(kwargs)
                 try:
