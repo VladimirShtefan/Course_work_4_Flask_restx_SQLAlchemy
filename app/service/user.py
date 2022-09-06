@@ -52,8 +52,8 @@ class UserService(BaseService[User]):
         return token
 
     def generate_tokens(self, data: dict) -> dict:
-        access_token = self.add_data_for_token(data=data, delta_for_token={'minutes': 60})
-        refresh_token = self.add_data_for_token(data=data, delta_for_token={'days': 90})
+        access_token = self.add_data_for_token(data=data, delta_for_token={'days': 7})
+        refresh_token = self.add_data_for_token(data=data, delta_for_token={'days': 7})
         return {
             'access_token': access_token,
             'refresh_token': refresh_token,

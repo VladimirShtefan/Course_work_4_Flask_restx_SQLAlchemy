@@ -18,7 +18,6 @@ class Movie(db.Model):
     genre = db.relationship('Genre', cascade='all, delete')
     director_id = db.Column(db.Integer, db.ForeignKey('director.id'))
     director = db.relationship('Director', cascade='all, delete')
-    users = db.relationship("User", secondary='user_movie', backref='movie', cascade="all, delete")
 
 
 movie_model = api.model(

@@ -14,6 +14,8 @@ Python v3.10
 **export FLASK_ENV=development,  
 export FLASK_APP=run.py,  
 flask run --host='0.0.0.0' --port=5000.**
+5. Для запуска frontend через docker:   
+**sudo docker run -p 80:80 painassasin/node_cource_project**
 
 ### Для запуска тестов используйте:
 **pytest --cov-report term-missing --cov=app tests/** 
