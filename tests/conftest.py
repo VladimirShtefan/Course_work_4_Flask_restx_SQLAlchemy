@@ -1,6 +1,22 @@
-import pytest
+from functools import wraps
+from unittest.mock import patch
 
-from sqlalchemy.ext.declarative import declarative_base
+
+def mock_decorator(*roles):
+    def mock_mock_decorator(f):
+        @wraps(f)
+        def decorator(*args, **kwargs):
+            return f(*args, **kwargs, email='email')
+
+        return decorator
+
+    return mock_mock_decorator
+
+
+patch('app.helpers.decorators.user_required', mock_decorator).start()
+
+
+import pytest
 
 from app.app import create_app
 from app.config import TestConfig
@@ -27,22 +43,3 @@ def database(app):
 def client(database, app):
     with app.test_client() as client:
         yield client
-
-
-@pytest.fixture
-def create_models(database):
-    def wrapper(name_model: declarative_base, number_of_models: int, **fields):
-        model_list = []
-        for i in range(1, number_of_models+1):
-            model = {}
-            for key, value in fields.items():
-                if isinstance(value, str):
-                    field = f'{value}_{i}'
-                else:
-                    field = value+i
-                model[key] = field
-            model_list.append(name_model(**model))
-        database.session.add_all(model_list)
-        database.session.commit()
-        return model_list
-    return wrapper

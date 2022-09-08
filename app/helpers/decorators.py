@@ -24,13 +24,13 @@ def user_required(*user_role):
                 return {'error': 'Auth-required'}, 401, {'WWW-Authenticate': 'Bearer error=Access denied'}
             else:
                 role = Role(data_token.get('role', 'user'))
-                username = data_token['username']
+                email = data_token['email']
 
                 if role not in user_role:
                     return {'error': 'Auth-required'}, 403, \
-                           {'WWW-Authenticate': f'Bearer error=Access denied for {username}'}
+                           {'WWW-Authenticate': f'Bearer error=Access denied for {email}'}
 
-                return func(*args, **kwargs, username=data_token['username'])
+                return func(*args, **kwargs, email=data_token['email'])
 
         return wrapper
 

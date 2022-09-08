@@ -13,6 +13,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     ERROR_INCLUDE_MESSAGE = False
+    ITEMS_PER_PAGE = 12
 
 
 class DevConfig(Config):

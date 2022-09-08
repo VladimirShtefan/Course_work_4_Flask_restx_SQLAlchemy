@@ -1,11 +1,12 @@
-from flask import Flask, g, render_template
+from flask import Flask, g
 from sqlalchemy.exc import DBAPIError
+from flask_cors import CORS
 
-from app.blueprints.api_blueprint.api import api_blueprint
 from app.exceptions import BaseAppException
 from app.setup_api import api
 from app.setup_db import db
 from app.views.view_directors import director_ns
+from app.views.view_favorites import favorites_ns
 from app.views.view_genres import genre_ns
 from app.views.view_movies import movie_ns
 from app.views.view_auth import auth_ns
@@ -37,22 +38,19 @@ def create_app(config_object) -> Flask:
                 g.session.close()
         return response
 
-    @application.route('/')
-    def index():
-        return render_template('index.html')
-
     return application
 
 
 def register_extensions(app: Flask):
+    CORS(app=app)
     db.init_app(app)
-    # api.init_app(app)
-    app.register_blueprint(api_blueprint)
+    api.init_app(app)
     api.add_namespace(movie_ns)
     api.add_namespace(genre_ns)
     api.add_namespace(director_ns)
     api.add_namespace(auth_ns)
     api.add_namespace(user_ns)
+    api.add_namespace(favorites_ns)
 
     @api.errorhandler(BaseAppException)
     def get_exception(e: BaseAppException):
