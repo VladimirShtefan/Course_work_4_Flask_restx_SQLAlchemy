@@ -6,14 +6,19 @@ from typing import List
 
 import jwt
 from datetime import datetime, timedelta
+
+from dotenv import load_dotenv
 from jwt.exceptions import ExpiredSignatureError
 
-from app.constants import SECRET, ALGORITHMS, PWD_HASH_SALT, PWD_HASH_ITERATIONS
+from app.constants import ALGORITHMS, PWD_HASH_ITERATIONS, PWD_HASH_SALT, SECRET
 from app.dao.model.movie import Movie
 from app.dao.model.user import User, Role
 from app.dao.user import UserDAO
 from app.exceptions import ValidationError, UserNotFound, InvalidPassword, TokenExpired
 from app.service.base import BaseService
+
+
+load_dotenv()
 
 
 class UserService(BaseService[User]):
@@ -78,7 +83,7 @@ class UserService(BaseService[User]):
         password: bytes = self.get_hash(self.check_reliability(kwargs.get('password')))
         email: str = kwargs.get('email')
         role: str = kwargs.get('role')
-        if role in list(map(str, Role)):
+        if role in [x.value for x in Role]:
             user_role = Role(role)
         else:
             user_role: Role = Role.user

@@ -1,4 +1,11 @@
+import os
+
+from dotenv import load_dotenv
+
 from app.constants import DATA_BASE_PATH
+
+
+load_dotenv()
 
 
 class Config(object):
@@ -25,6 +32,13 @@ class DevConfig(Config):
 
 class ProdConfig(Config):
     ENV = 'production'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{username}:{password}@{host}:{port}/{db_name}'.format(
+        username=os.getenv('POSTGRES_USERNAME'),
+        password=os.getenv('POSTGRES_PASSWORD'),
+        host=os.getenv('POSTGRES_HOST', '127.0.0.1'),
+        port=os.getenv('POSTGRES_PORT', 5000),
+        db_name=os.getenv('POSTGRES_DB')
+    )
 
 
 class TestConfig(Config):
