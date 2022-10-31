@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 
-from app.app import create_app
+from app.app import create_app, get_config
 from app.config import Config
 from app.dao.model.director import Director
 from app.dao.model.genre import Genre
@@ -51,6 +51,7 @@ def _load_fixtures(database=db):
 
 
 if __name__ == '__main__':
-    app = create_app(Config)
+    config = get_config()
+    app = create_app(config)
     with app.app_context():
         _load_fixtures()

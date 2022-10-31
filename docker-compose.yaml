@@ -11,6 +11,8 @@ services:
       - POSTGRES_DB=movies_pg
   db:
     image: postgres
+    ports:
+      - '5432:5432'
     environment:
       - POSTGRES_USER=vshtefan
       - POSTGRES_PASSWORD=Tpc*3SYUgWL.CKr
