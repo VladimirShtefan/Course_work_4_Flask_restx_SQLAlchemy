@@ -2,18 +2,18 @@ from typing import List
 
 from app.dao.base import BaseDAO
 from app.dao.model.movie import Movie
-from app.dao.model.user import User, Role
+from app.dao.model.user import Users, Role
 from sqlalchemy.exc import IntegrityError
 
 from app.dao.model.user_movie import UserMovie
 from app.exceptions import BadRequest
 
 
-class UserDAO(BaseDAO[User]):
-    __model__ = User
+class UserDAO(BaseDAO[Users]):
+    __model__ = Users
 
     def create_user(self, email: str, password: bytes, role: Role) -> None:
-        new_user = User(email=email, password=password, role=role)
+        new_user = Users(email=email, password=password, role=role)
         self.db_session.add(new_user)
         try:
             self.db_session.flush()
@@ -22,10 +22,10 @@ class UserDAO(BaseDAO[User]):
             self.logger.info(e.orig)
             raise BadRequest(e.orig)
 
-    def search_user(self, email: str) -> User | None:
+    def search_user(self, email: str) -> Users | None:
         return self.db_session.query(self.__model__).filter_by(email=email).first()
 
-    def add_user_token(self, user: User, refresh_token: str) -> None:
+    def add_user_token(self, user: Users, refresh_token: str) -> None:
         user.refresh_token = refresh_token
         self.db_session.flush()
 

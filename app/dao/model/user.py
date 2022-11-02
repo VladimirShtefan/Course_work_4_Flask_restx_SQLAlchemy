@@ -12,21 +12,21 @@ class Role(enum.Enum):
     admin = 'admin'
 
 
-class User(db.Model):
-    __tablename__ = 'user'
+class Users(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    password = db.Column(db.LargeBinary, nullable=False)
     role = db.Column(db.Enum(Role), default=Role.user, nullable=True)
     refresh_token = db.Column(db.String, unique=True)
     name = db.Column(db.String, nullable=True)
     surname = db.Column(db.String, nullable=True)
     favourite_genre = db.Column(db.Integer, db.ForeignKey('genre.id'))
-    movies = db.relationship("Movie", secondary='user_movie', backref='user', cascade="all, delete")
+    movies = db.relationship("Movie", secondary='user_movie', backref='users', cascade="all, delete")
 
 
 user_model = api.model(
-    'User',
+    'Users',
     {
         'id': fields.Integer(required=True, example=12),
         'email': fields.String(max_length=50, required=True, example='email'),

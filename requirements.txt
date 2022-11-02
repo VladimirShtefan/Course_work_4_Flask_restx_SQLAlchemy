@@ -9,3 +9,8 @@ coverage==6.4.4
 SQLAlchemy==1.4.40
 pytest-cov==3.0.0
 pytest==7.1.2
+python-dotenv==0.21.0
+Flask-Cors==3.0.10
+psycopg2-binary==2.9.5
+Flask-Alembic==2.0.1
+Flask-Migrate==3.1.0

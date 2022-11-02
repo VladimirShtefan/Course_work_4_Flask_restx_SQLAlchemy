@@ -6,7 +6,7 @@ from app.setup_db import db
 
 class UserMovie(db.Model):
     __tablename__ = 'user_movie'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id', ondelete="CASCADE"), primary_key=True)
 
 

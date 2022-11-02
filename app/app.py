@@ -1,10 +1,14 @@
+import os
+
 from flask import Flask, g
 from sqlalchemy.exc import DBAPIError
 from flask_cors import CORS
 
+from app.config import DevConfig, ProdConfig
 from app.exceptions import BaseAppException
 from app.setup_api import api
 from app.setup_db import db
+from app.setup_migrate import migrate
 from app.views.view_directors import director_ns
 from app.views.view_favorites import favorites_ns
 from app.views.view_genres import genre_ns
@@ -16,9 +20,22 @@ from logger import create_logger
 logger = create_logger(__name__)
 
 
-def create_app(config_object) -> Flask:
+def get_config():
+    match os.environ.get('FLASK_ENV'):
+        case 'development':
+            logger.info('FLASK_ENV set on development')
+            return DevConfig
+        case 'production':
+            logger.info('FLASK_ENV set on production')
+            return ProdConfig
+        case _:
+            logger.critical('FLASK_ENV dont set')
+            raise RuntimeError('Need to set environment variable FLASK_ENV')
+
+
+def create_app(config) -> Flask:
     application = Flask(__name__)
-    application.config.from_object(config_object)
+    application.config.from_object(config)
     register_extensions(application)
     logger.info('app created')
 
@@ -44,6 +61,7 @@ def create_app(config_object) -> Flask:
 def register_extensions(app: Flask):
     CORS(app=app)
     db.init_app(app)
+    migrate.init_app(app)
     api.init_app(app)
     api.add_namespace(movie_ns)
     api.add_namespace(genre_ns)

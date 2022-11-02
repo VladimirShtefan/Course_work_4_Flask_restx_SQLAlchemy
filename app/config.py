@@ -1,9 +1,16 @@
+import os
+
+from dotenv import load_dotenv
+
 from app.constants import DATA_BASE_PATH
+
+
+load_dotenv()
 
 
 class Config(object):
     JSON_AS_ASCII = False
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATA_BASE_PATH}'
+    SQLALCHEMY_DATABASE_URI: str = f'sqlite:///{DATA_BASE_PATH}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     RESTX_JSON = {
         'ensure_ascii': False,
@@ -25,10 +32,17 @@ class DevConfig(Config):
 
 class ProdConfig(Config):
     ENV = 'production'
+    SQLALCHEMY_DATABASE_URI: str = 'postgresql://{username}:{password}@{host}:{port}/{db_name}'.format(
+        username=os.getenv('POSTGRES_USER'),
+        password=os.getenv('POSTGRES_PASSWORD'),
+        host=os.getenv('POSTGRES_HOST', 'localhost'),
+        port=os.getenv('POSTGRES_PORT', 5432),
+        db_name=os.getenv('POSTGRES_DB')
+    )
 
 
 class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     TESTING = True
     DEBUG = True
-    # SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = True
