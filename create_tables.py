@@ -1,5 +1,3 @@
-from sqlalchemy import create_engine
-
 from app.app import create_app, get_config
 from app.dao.model.director import Director
 from app.dao.model.genre import Genre
@@ -16,7 +14,6 @@ def _create_tables():
 
 if __name__ == '__main__':
     config = get_config()
-    engine = create_engine("postgresql://scott:tiger@localhost:5432/mydatabase")
     app = create_app(config)
     with app.app_context():
         _create_tables()
