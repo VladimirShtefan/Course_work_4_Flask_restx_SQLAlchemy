@@ -12,7 +12,7 @@ from jwt.exceptions import ExpiredSignatureError
 
 from app.constants import ALGORITHMS, PWD_HASH_ITERATIONS, PWD_HASH_SALT, SECRET
 from app.dao.model.movie import Movie
-from app.dao.model.user import User, Role
+from app.dao.model.user import Users, Role
 from app.dao.user import UserDAO
 from app.exceptions import ValidationError, UserNotFound, InvalidPassword, TokenExpired
 from app.service.base import BaseService
@@ -21,7 +21,7 @@ from app.service.base import BaseService
 load_dotenv()
 
 
-class UserService(BaseService[User]):
+class UserService(BaseService[Users]):
     def __init__(self):
         super().__init__()
         self.dao = UserDAO()
@@ -68,10 +68,8 @@ class UserService(BaseService[User]):
         email: str = kwargs.get('email')
         password: bytes = self.get_hash(kwargs.get('password'))
         user = self.dao.search_user(email)
-
         if user is None:
             raise UserNotFound(f'User with email:{email}, not found')
-
         if not hmac.compare_digest(user.password, password):
             raise InvalidPassword('Invalid password')
         data = {'email': user.email, 'role': user.role.name}
@@ -106,7 +104,7 @@ class UserService(BaseService[User]):
         refresh_token = tokens.get('refresh_token')
         return self.approve_refresh_token(refresh_token)
 
-    def get_user_profile(self, email: str) -> User | None:
+    def get_user_profile(self, email: str) -> Users | None:
         return self.dao.search_user(email)
 
     def patch_user_info(self, email: str, **kwargs) -> None:

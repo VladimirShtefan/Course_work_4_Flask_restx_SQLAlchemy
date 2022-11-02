@@ -2,7 +2,7 @@ from app.app import create_app, get_config
 from app.dao.model.director import Director
 from app.dao.model.genre import Genre
 from app.dao.model.movie import Movie
-from app.dao.model.user import User
+from app.dao.model.user import Users
 from app.dao.model.user_movie import UserMovie
 from app.setup_db import db
 

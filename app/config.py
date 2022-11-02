@@ -45,4 +45,4 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     TESTING = True
     DEBUG = True
-    # SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = True
