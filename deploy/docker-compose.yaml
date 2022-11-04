@@ -32,15 +32,13 @@ services:
       db:
         condition: service_healthy
 
-#  frontend:
-#    image: painassasin/node_cource_project:latest
-#    ports:
-#      - '80:80'
-#    depends_on:
-#      backend:
-#        condition: service_healthy
-#    networks:
-#      - frontend_nw
+  frontend:
+    image: painassasin/node_cource_project:latest
+    ports:
+      - '80:80'
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
   pg_data_flask:

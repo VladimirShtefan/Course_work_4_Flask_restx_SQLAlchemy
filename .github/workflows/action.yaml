@@ -90,12 +90,6 @@ jobs:
             cd Course_work_4_Flask_restx_SQLAlchemy
             docker compose pull
             docker compose up -d
-      - name: Run frontend
-        uses: addnab/docker-run-action@v3
-        with:
-          image: painassasin/node_cource_project:latest
-          run: |
-            echo docker run -p 80:80 painassasin/node_cource_project
       - name: Clear after deploy
         if: always()
         uses: appleboy/ssh-action@master
