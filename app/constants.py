@@ -14,5 +14,4 @@ ERROR_LOG_PATH = Path.joinpath(CURRENT_PATH, 'errors_log.log')
 ALGORITHMS = "HS256"
 PWD_HASH_ITERATIONS = 100_000
 PWD_HASH_SALT = base64.b64decode(os.getenv('PWD_HASH_SALT', 'salt'))
-SECRET = os.environ.get('SECRET')
-print(SECRET)
+SECRET = os.environ.get('SECRET', 'secret')

@@ -84,8 +84,8 @@ class TestUserService:
             user_service_none.search_user(email='email', password='password')
 
     def test_create_user(self, user_service):
-        assert user_service.create_user(email='email', password='Intafy*D1411', role='admin') is None
-        assert user_service.create_user(email='email', password='Intafy*D1411', role='') is None
+        assert user_service.create_user(email='email', password='sfsdfsdfdsSADFASD65456@!#@!#', role='admin') is None
+        assert user_service.create_user(email='email', password='sfsdfsdfdsSADFASD65456@!#@!#', role='') is None
 
     # def test_get_movie(self, movie_service, movie):
     #     assert movie_service.get_movie(movie.id)
