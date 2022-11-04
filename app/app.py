@@ -53,6 +53,8 @@ def create_app(config) -> Flask:
                 g.session.rollback()
             finally:
                 g.session.close()
+        header = response.headers
+        header['Access-Control-Allow-Origin'] = '*'
         return response
     return application
 
@@ -67,7 +69,7 @@ def register_extensions(app: Flask):
     api.add_namespace(auth_ns)
     api.add_namespace(user_ns)
     api.add_namespace(favorites_ns)
-    cors.init_app(app)
+    cors.init_app(app, resources={r"/*": {"origins": "*"}})
 
     @api.errorhandler(BaseAppException)
     def get_exception(e: BaseAppException):
