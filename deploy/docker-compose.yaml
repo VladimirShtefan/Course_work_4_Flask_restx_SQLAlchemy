@@ -21,6 +21,8 @@ services:
   backend:
     image: ${DOCKER_HUB_USERNAME}/flask_cw_4:latest
     restart: always
+    ports:
+      - '5000:5000'
     env_file:
       - ./.env
     environment:
