@@ -11,17 +11,18 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
       test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-      interval: 5s
-      timeout: 5s
+      interval: 3s
+      timeout: 3s
       retries: 5
     volumes:
       - pg_data_flask:/var/lib/postgresql/data
+    networks:
+      - backend_nw
 
   backend:
-    image: shtefanvladimir/flask_cw_4:latest
     build:
       context: .
-      dockerfile: app/Dockerfile
+      dockerfile: Dockerfile
     restart: always
     ports:
       - '5000:5000'
@@ -31,12 +32,15 @@ services:
       POSTGRES_HOST: db
     healthcheck:
       test: curl -sS http://127.0.0.1:5000 || exit 1
-      interval: 15s
-      timeout: 10s
-      retries: 3
+      interval: 3s
+      timeout: 3s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - backend_nw
+      - frontend_nw
 
   frontend:
     image: painassasin/node_cource_project:latest
@@ -45,6 +49,14 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    networks:
+      - frontend_nw
 
 volumes:
   pg_data_flask:
+
+networks:
+  backend_nw:
+    driver: bridge
+  frontend_nw:
+    driver: bridge

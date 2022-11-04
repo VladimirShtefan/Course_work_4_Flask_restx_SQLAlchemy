@@ -6,7 +6,11 @@ from app.exceptions import BadRequest
 
 
 def test_create_user(user_dao, database):
-    user_dao.create_user(email='email', password='password', role=Role.user)
+    user_dao.create_user(email='email',
+                         password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<\x94"
+                                  b"\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                                  b"\x9e\x99\x9a;\x18\t\xd6\x1c",
+                         role=Role.user)
     users = database.session.query(user_dao.__model__).all()
     assert isinstance(users, list)
     assert users[0].email == 'email'
@@ -15,21 +19,31 @@ def test_create_user(user_dao, database):
 
 def test_create_user_bad_request(user_dao, create_models):
     create_models(name_model=user_dao.__model__, number_of_models=1,
-                  email='email', password='password')
+                  email='email',
+                  password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<\x94"
+                           b"\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                           b"\x9e\x99\x9a;\x18\t\xd6\x1c", )
     with pytest.raises(BadRequest):
-        user_dao.create_user(email='email_1', password='password_1', role=Role.user)
+        user_dao.create_user(email='email_1', password=b'password_1', role=Role.user)
 
 
 def test_search_user(user_dao, create_models):
-    test_user = create_models(name_model=user_dao.__model__, number_of_models=1,
-                              email='email', password='password')
+    test_user = create_models(
+        name_model=user_dao.__model__, number_of_models=1,
+        email='email',
+        password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<"
+                 b"\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                 b"\x9e\x99\x9a;\x18\t\xd6\x1c")
     user = user_dao.search_user(email='email_1')
     assert [user] == test_user
 
 
 def test_add_user_token(user_dao, create_models, database):
-    test_user = create_models(name_model=user_dao.__model__, number_of_models=1,
-                              email='email', password='password')
+    test_user = create_models(
+        name_model=user_dao.__model__, number_of_models=1,
+        email='email', password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<"
+                                b"\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                                b"\x9e\x99\x9a;\x18\t\xd6\x1c")
     user_dao.add_user_token(test_user[0], 'token')
     users = database.session.query(user_dao.__model__).all()
     assert isinstance(users, list)
@@ -37,8 +51,13 @@ def test_add_user_token(user_dao, create_models, database):
 
 
 def test_update_user(user_dao, create_models, database):
-    create_models(name_model=user_dao.__model__, number_of_models=1,
-                  email='email', password='password')
+    create_models(
+        name_model=user_dao.__model__,
+        number_of_models=1,
+        email='email',
+        password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<"
+                 b"\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                 b"\x9e\x99\x9a;\x18\t\xd6\x1c")
     user_dao.update_user(email='email_1', name='name', favourite_genre='favourite_genre', surname='surname')
     users = database.session.query(user_dao.__model__).all()
     assert isinstance(users, list)
@@ -56,7 +75,10 @@ def test_change_user_password(user_dao, create_models, database):
 
 def test_add_movie_in_favorites(user_dao, create_models, database):
     create_models(name_model=user_dao.__model__, number_of_models=1,
-                  email='email', password='password')
+                  email='email',
+                  password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<"
+                           b"\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                           b"\x9e\x99\x9a;\x18\t\xd6\x1c")
     user_dao.add_movie_in_favorites(movie_id=1, email='email_1')
     user_movie = database.session.query(UserMovie).all()
     assert isinstance(user_movie, list)
@@ -69,7 +91,10 @@ def test_get_favorite_movies(user_dao, create_models, movie_dao, database):
     database.session.add(user_movie)
     database.session.commit()
     create_models(name_model=user_dao.__model__, number_of_models=1,
-                  email='email', password='password')
+                  email='email',
+                  password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<"
+                           b"\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                           b"\x9e\x99\x9a;\x18\t\xd6\x1c")
     create_models(name_model=movie_dao.__model__, number_of_models=1,
                   title='title', year=2020)
     user_movies = user_dao.get_favorite_movies(email='email_1')
@@ -82,8 +107,12 @@ def test_delete_movie_from_favorites(user_dao, create_models, movie_dao, databas
     user_movie_2 = UserMovie(user_id=1, movie_id=2)
     database.session.add_all([user_movie_1, user_movie_2])
     database.session.commit()
-    create_models(name_model=user_dao.__model__, number_of_models=1,
-                  email='email', password='password')
+    create_models(
+        name_model=user_dao.__model__, number_of_models=1,
+        email='email',
+        password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<"
+                 b"\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce"
+                 b"\x9e\x99\x9a;\x18\t\xd6\x1c")
     user_dao.delete_movie_from_favorites(movie_id=1, email='email_1')
     user_movie = database.session.query(UserMovie).all()
     assert user_movie[0].user_id == 1
