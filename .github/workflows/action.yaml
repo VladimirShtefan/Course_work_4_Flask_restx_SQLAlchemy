@@ -77,6 +77,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
+          passphrase: ${{ secrets.SERVER_PASSPHRASE }}
+          key: ${{ secrets.SERVER_KEY }}
           source: "deploy/*"
           target: Course_work_4_Flask_restx_SQLAlchemy
           strip_components: 1
