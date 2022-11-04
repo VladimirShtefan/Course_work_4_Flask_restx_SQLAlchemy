@@ -95,7 +95,7 @@ jobs:
         with:
           image: painassasin/node_cource_project:latest
           run: |
-            docker run -p 80:80 painassasin/node_cource_project
+            echo docker run -p 80:80 painassasin/node_cource_project
       - name: Clear after deploy
         if: always()
         uses: appleboy/ssh-action@master
