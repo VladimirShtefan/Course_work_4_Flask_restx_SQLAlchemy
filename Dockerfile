@@ -12,5 +12,6 @@ RUN python3 -m pip install --no-cache -r requirements.txt
 COPY . .
 
 ENTRYPOINT ["bash", "entrypoint.sh"]
-CMD ["gunicorn", "run:app", "-b", "0.0.0.0:5000", "-w", "4", "--log-level=debug"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
 #CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
+#CMD ["gunicorn", "run:app", "-b", "0.0.0.0:5000", "-w", "4", "--log-level=debug"]

@@ -15,14 +15,10 @@ services:
       retries: 5
     volumes:
       - pg_data_flask:/var/lib/postgresql/data
-    networks:
-      - backend_nw
 
   backend:
     image: ${DOCKER_HUB_USERNAME}/flask_cw_4:latest
     restart: always
-    ports:
-      - '5000:5000'
     env_file:
       - ./.env
     environment:
@@ -35,25 +31,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    networks:
-      - backend_nw
-      - frontend_nw
 
-  frontend:
-    image: painassasin/node_cource_project:latest
-    ports:
-      - '80:80'
-    depends_on:
-      backend:
-        condition: service_healthy
-    networks:
-      - frontend_nw
+#  frontend:
+#    image: painassasin/node_cource_project:latest
+#    ports:
+#      - '80:80'
+#    depends_on:
+#      backend:
+#        condition: service_healthy
+#    networks:
+#      - frontend_nw
 
 volumes:
   pg_data_flask:
-
-networks:
-  backend_nw:
-    driver: bridge
-  frontend_nw:
-    driver: bridge

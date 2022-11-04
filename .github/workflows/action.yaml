@@ -99,3 +99,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             docker system prune -a -f
+      - name: Run frontend
+        script: |
+          docker pull painassasin/node_cource_project:latest
+          docker run -p 80:80 painassasin/node_cource_project

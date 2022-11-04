@@ -2,10 +2,10 @@ import os
 
 from flask import Flask, g
 from sqlalchemy.exc import DBAPIError
-from flask_cors import CORS
 
 from app.config import DevConfig, ProdConfig
 from app.exceptions import BaseAppException
+from app.flask_cors import cors
 from app.setup_api import api
 from app.setup_db import db
 from app.setup_migrate import migrate
@@ -54,12 +54,10 @@ def create_app(config) -> Flask:
             finally:
                 g.session.close()
         return response
-
     return application
 
 
 def register_extensions(app: Flask):
-    CORS(app=app)
     db.init_app(app)
     migrate.init_app(app)
     api.init_app(app)
@@ -69,6 +67,7 @@ def register_extensions(app: Flask):
     api.add_namespace(auth_ns)
     api.add_namespace(user_ns)
     api.add_namespace(favorites_ns)
+    cors.init_app(app)
 
     @api.errorhandler(BaseAppException)
     def get_exception(e: BaseAppException):
