@@ -3,7 +3,7 @@ from werkzeug.exceptions import NotFound
 
 import pytest
 
-from app.dao.model.user import User, Role
+from app.dao.model.user import Users, Role
 from app.dao.user import UserDAO
 from app.exceptions import ValidationError, UserNotFound, InvalidPassword
 from app.service.user import UserService
@@ -14,14 +14,9 @@ class TestUserService:
     @patch('app.dao.user.UserDAO')
     def user_dao_mock(self, dao_mock):
         dao = dao_mock()
-        dao.search_user.return_value = User(id=1, email='email',
-                                            password=b'\xf2\x02~\xde\xc6\xc3~\xe8\x81\xf24`t\xf1'
-                                                     b'\x9f\xe6('
-                                                     b'BB)2\x13\x1d8\xc7T\xe6\x0cTa\xc7\xfd\xee'
-                                                     b'\x0f\xd0W2\xea\x15\x8db\x9eC+K\xb3W\x85'
-                                                     b'\xd3~\x81\x81\x02S\x99A\x8b=\ny\xc7\x17W'
-                                                     b'\xb1',
-                                            role=Role.user)
+        dao.search_user.return_value = Users(id=1, email='email',
+                                             password=b"\x1e\xbe'7C\x9b\x8fZ\xa7k^%\xff\x10\xb0G\xfa\xf5\x17\xbb\xa6l\xe7\xe3y\xc8\x9a<\x94\x98{y\x9d\xc1\x83\x17\x1e\xd5%\xf0Z\xc2\x13\x8em>\xd54\xc5\xf6\r\xff,y\xba\xce\x9e\x99\x9a;\x18\t\xd6\x1c",
+                                             role=Role.user)
         dao.create_user.return_value = None
         # dao.add_movie.return_value = [
         #     Movie(id=1, title='test_movie_1'),
@@ -91,7 +86,6 @@ class TestUserService:
     def test_create_user(self, user_service):
         assert user_service.create_user(email='email', password='Intafy*D1411', role='admin') is None
         assert user_service.create_user(email='email', password='Intafy*D1411', role='') is None
-
 
     # def test_get_movie(self, movie_service, movie):
     #     assert movie_service.get_movie(movie.id)
