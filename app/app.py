@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, g, request, make_response
+from flask import Flask, g
 from flask_cors import CORS
 from sqlalchemy.exc import DBAPIError
 
@@ -36,7 +36,6 @@ def get_config():
 
 def create_app(config) -> Flask:
     application = Flask(__name__)
-    CORS(application, allow_headers=['Content-Type'])
     application.config.from_object(config)
     register_extensions(application)
     logger.info('app created')
@@ -61,6 +60,7 @@ def create_app(config) -> Flask:
 
 
 def register_extensions(app: Flask):
+    CORS(app=app)
     db.init_app(app)
     migrate.init_app(app)
     api.init_app(app)

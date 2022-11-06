@@ -21,12 +21,6 @@ class Config(object):
     ERROR_INCLUDE_MESSAGE = False
     ITEMS_PER_PAGE = 12
     CORS_HEADERS = 'Content-Type'
-    ORIGINS = ['http://localhost:80',
-               'http://vshtefan.ga:80',
-               'http://127.0.0.1:5000/',
-               'http://127.0.0.1:80/',
-               'http://127.0.0.1:5000/',
-               'http://vshtefan.ga:5000']
 
 
 class DevConfig(Config):
@@ -52,4 +46,3 @@ class TestConfig(Config):
     TESTING = True
     DEBUG = True
     SQLALCHEMY_ECHO = True
-    ORIGINS = '*'
