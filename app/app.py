@@ -53,22 +53,7 @@ def create_app(config) -> Flask:
                 g.session.rollback()
             finally:
                 g.session.close()
-        origin = request.headers.get('Origin')
-        if request.method == 'OPTIONS':
-            response = make_response()
-            response.headers.add('Access-Control-Allow-Credentials', 'true')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-            response.headers.add('Access-Control-Allow-Headers', 'x-csrf-token')
-            response.headers.add('Access-Control-Allow-Methods',
-                                 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-            if origin:
-                response.headers.add('Access-Control-Allow-Origin', origin)
-        else:
-            response.headers.add('Access-Control-Allow-Credentials', 'true')
-            if origin:
-                response.headers.add('Access-Control-Allow-Origin', origin)
 
-        return response
     return application
 
 
@@ -82,7 +67,10 @@ def register_extensions(app: Flask):
     api.add_namespace(auth_ns)
     api.add_namespace(user_ns)
     api.add_namespace(favorites_ns)
-    cors.init_app(app, resources={r"/*": {"origins": "*"}})
+    cors.init_app(app,
+                  origins=['http://localhost:80',
+                           'http://vshtefan.ga:80'],
+                  methods=['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'])
 
     @api.errorhandler(BaseAppException)
     def get_exception(e: BaseAppException):
