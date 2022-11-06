@@ -36,7 +36,7 @@ def get_config():
 
 def create_app(config) -> Flask:
     application = Flask(__name__)
-    CORS(application, support_credentials=True, allow_headers=['Content-Type'], )
+    CORS(application, allow_headers=['Content-Type'])
     application.config.from_object(config)
     register_extensions(application)
     logger.info('app created')
