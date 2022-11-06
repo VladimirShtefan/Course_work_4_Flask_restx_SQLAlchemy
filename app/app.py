@@ -17,6 +17,7 @@ from app.views.view_auth import auth_ns
 from app.views.view_user import user_ns
 from logger import create_logger
 
+
 logger = create_logger(__name__)
 
 
@@ -68,9 +69,7 @@ def register_extensions(app: Flask):
     api.add_namespace(user_ns)
     api.add_namespace(favorites_ns)
     cors.init_app(app,
-                  origins=['http://localhost:80',
-                           'http://vshtefan.ga:80',
-                           'http://localhost:5000'],
+                  origins=app.config.get('ORIGINS'),
                   methods=['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'])
 
     @api.errorhandler(BaseAppException)

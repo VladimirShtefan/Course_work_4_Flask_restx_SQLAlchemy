@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 
 from app.constants import DATA_BASE_PATH
 
-
 load_dotenv()
 
 
@@ -22,6 +21,9 @@ class Config(object):
     ERROR_INCLUDE_MESSAGE = False
     ITEMS_PER_PAGE = 12
     CORS_HEADERS = 'Content-Type'
+    ORIGINS = ['http://localhost:80',
+               'http://vshtefan.ga:80',
+               'http://localhost:5000']
 
 
 class DevConfig(Config):
@@ -47,3 +49,4 @@ class TestConfig(Config):
     TESTING = True
     DEBUG = True
     SQLALCHEMY_ECHO = True
+    ORIGINS = '*'
