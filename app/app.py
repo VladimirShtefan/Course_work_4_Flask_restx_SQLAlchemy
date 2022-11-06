@@ -54,6 +54,7 @@ def create_app(config) -> Flask:
                 g.session.rollback()
             finally:
                 g.session.close()
+        return response
 
     return application
 
