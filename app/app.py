@@ -60,7 +60,7 @@ def create_app(config) -> Flask:
 
 
 def register_extensions(app: Flask):
-    CORS(app=app, allow_headers=['Content-Type', 'Authorization'], methods=['POST', 'GET', 'OPTIONS'], resources='/')
+    CORS(app=app, allow_headers=['Content-Type', 'Authorization'], methods=['GET', 'HEAD', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'])
     db.init_app(app)
     migrate.init_app(app)
     api.init_app(app)
