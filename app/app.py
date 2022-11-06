@@ -69,7 +69,8 @@ def register_extensions(app: Flask):
     api.add_namespace(favorites_ns)
     cors.init_app(app,
                   origins=['http://localhost:80',
-                           'http://vshtefan.ga:80'],
+                           'http://vshtefan.ga:80',
+                           'http://localhost:5000'],
                   methods=['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'])
 
     @api.errorhandler(BaseAppException)
