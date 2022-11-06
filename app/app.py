@@ -70,6 +70,7 @@ def register_extensions(app: Flask):
     api.add_namespace(user_ns)
     api.add_namespace(favorites_ns)
     cors.init_app(app,
+                  allow_headers=['Content-Type'],
                   origins=app.config.get('ORIGINS'),
                   methods=['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'])
 
