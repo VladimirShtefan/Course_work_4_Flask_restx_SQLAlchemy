@@ -36,6 +36,10 @@ def get_config():
 
 def create_app(config) -> Flask:
     application = Flask(__name__)
+    CORS(app=application,
+         origins=['http://vshtefan.ga', 'http://127.0.0.1'],
+         allow_headers=['authorization', 'content-type'],
+         methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'])
     application.config.from_object(config)
     register_extensions(application)
     logger.info('app created')
@@ -60,7 +64,6 @@ def create_app(config) -> Flask:
 
 
 def register_extensions(app: Flask):
-    CORS(app=app, allow_headers=['Content-Type', 'Authorization'], methods=['GET', 'HEAD', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'])
     db.init_app(app)
     migrate.init_app(app)
     api.init_app(app)

@@ -1,4 +1,3 @@
-from flask_cors import cross_origin
 from flask_restx import Namespace, Resource
 
 from app.dao.model.exceptions import bad_request_model
