@@ -1,3 +1,4 @@
+from flask_cors import cross_origin
 from flask_restx import Namespace, Resource
 
 from app.dao.model.exceptions import bad_request_model
@@ -14,6 +15,7 @@ class AuthView(Resource):
     @auth_ns.expect(login_parser)
     @auth_ns.marshal_with(token_model, code=201, description='Tokens created')
     @auth_ns.response(code=401, description='Unauthorized')
+    @cross_origin(supports_credentials=True)
     def post(self):
         data = login_parser.parse_args()
         tokens = UserService().search_user(**data)
@@ -22,6 +24,7 @@ class AuthView(Resource):
     @auth_ns.expect(update_access_parser)
     @auth_ns.marshal_with(token_model, code=201, description='Tokens created')
     @auth_ns.response(code=401, description='Unauthorized')
+    @cross_origin(supports_credentials=True)
     def put(self):
         tokens: dict = update_access_parser.parse_args()
         try:
@@ -36,6 +39,7 @@ class RegisterView(Resource):
     @auth_ns.response(code=201, description='Created')
     @auth_ns.response(code=401, description='Unauthorized')
     @auth_ns.response(code=400, description='Bad request', model=bad_request_model)
+    @cross_origin(supports_credentials=True)
     def post(self):
         data = user_parser.parse_args()
         try:
