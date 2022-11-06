@@ -23,7 +23,10 @@ class Config(object):
     CORS_HEADERS = 'Content-Type'
     ORIGINS = ['http://localhost:80',
                'http://vshtefan.ga:80',
-               'http://localhost:5000']
+               'http://127.0.0.1:5000/',
+               'http://127.0.0.1:80/',
+               'http://127.0.0.1:5000/',
+               'http://vshtefan.ga:5000']
 
 
 class DevConfig(Config):
